@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+option go_package = "/gen";
+
+import "error.proto";
+import "models.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+package proto;
+
+message CategoryParam {
+  string id = 1;
+}
+
+message CategoriesResult {
+  repeated Category categories = 1;
+  Error error = 2;
+  google.protobuf.Timestamp timestamp = 3;
+}
+
+message CategoryResult {
+  oneof result {
+    Category category = 1;
+    Error error = 2;
+  }
+  google.protobuf.Timestamp timestamp = 3;
+}
+
+message ProductParam {
+  string id = 1;
+  string keyword = 2;
+}
+
+message ProductsResult {
+  repeated Product products = 1;
+  Error error = 2;
+  google.protobuf.Timestamp timestamp = 3;
+}
+
+message ProductResult {
+  oneof result {
+    Product product = 1;
+    Error error = 2;
+  }
+  google.protobuf.Timestamp timestamp = 3;
+}
+
+service CategoryQuery {
+  rpc List(google.protobuf.Empty) returns (CategoriesResult);
+  rpc ById(CategoryParam) returns (CategoryResult);
+}
+
+service ProductQuery {
+  rpc List(ProductParam) returns (ProductsResult);
+  rpc ById(ProductParam) returns (ProductResult);
+  rpc ByKeyword(ProductParam) returns (ProductsResult);
+}

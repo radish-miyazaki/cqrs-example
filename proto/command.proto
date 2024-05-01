@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+option go_package = "/gen";
+
+import "error.proto";
+import "models.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+package proto;
+
+enum CRUD {
+  UNKNOWN = 0;
+  INSERT = 1;
+  UPDATE = 2;
+  DELETE = 3;
+}
+
+message CategoryUpParam {
+  string id = 1;
+  string name = 2;
+}
+
+message ProductUpParam {
+  string id = 1;
+  string name = 2;
+  int32 price = 3;
+  string categoryId = 4;
+}
+
+message CategoryUpResult {
+  Category category = 1;
+  Error error = 2;
+  google.protobuf.Timestamp timestamp = 3;
+}
+
+message ProductUpResult {
+  Product product = 1;
+  Error error = 2;
+  google.protobuf.Timestamp timestamp = 3;
+}
+
+service CategoryCommand {
+  rpc Create(CategoryUpParam) returns (CategoryUpResult);
+  rpc Update(CategoryUpParam) returns (CategoryUpResult);
+  rpc Delete(CategoryUpParam) returns (CategoryUpResult);
+}
+
+service ProductCommand {
+  rpc Create(ProductUpParam) returns (ProductUpResult);
+  rpc Update(ProductUpParam) returns (ProductUpResult);
+  rpc Delete(ProductUpParam) returns (ProductUpResult);
+}
